@@ -1,0 +1,70 @@
+<p-fluid>
+    <div class="mx-auto register-form">
+        <form class="card  d-flex flex-column gap-4 p-4" [formGroup]="myForm" (ngSubmit)="SendData()">
+                    <div class="fs-3 fw-semibold">Register Form</div>
+                    <div class="d-flex flex-column gap-2">
+                        <p-floatlabel>
+                             <label for="name1">Name</label> 
+                        <input pInputText id="name1" type="text" formControlName="name" />
+                    </p-floatlabel>
+                    </div>
+                    @if (myForm.get('name')?.touched && myForm.get('name')?.getError('required')) {
+                        <p class="bg-danger text-light rounded-2 p-3">This Field is Required</p>
+                    }@if (myForm.get('name')?.touched && myForm.get('name')?.getError('minlength')) {
+                      <p class="bg-danger text-light rounded-2 p-3">Name must be at least 3 characters long.</p>
+                    }@if(myForm.get('name')?.touched && myForm.get('name')?.getError('maxlength')) {
+                      <p class="bg-danger text-light rounded-2 p-3">Name must not exceed 20 characters.</p>
+                    }
+                    <div class="d-flex flex-column gap-2">
+                        <p-floatlabel>
+                        <label for="email1">Email</label>
+                        <input pInputText id="email1" type="email" formControlName="email" />
+                        </p-floatlabel>
+                    </div>
+                     @if (myForm.get('email')?.touched && myForm.get('email')?.getError('required')) {
+                        <p class="bg-danger text-light rounded-2 p-3">This Field is Required</p>
+                    }@if (myForm.get('email')?.touched && myForm.get('email')?.getError('email')){
+                      <p class="bg-danger text-light rounded-2 p-3">Email must be a valid format (e.g. example@mail.com).</p>
+                     }
+                    <div class="d-flex flex-column gap-2">
+                        <p-floatlabel>
+                        <label for="password1">Password</label>
+                        <input pInputText id="password1" type="text" formControlName="password" />
+                        </p-floatlabel>
+                    </div>
+                     @if (myForm.get('password')?.touched && myForm.get('password')?.getError('required')) {
+                        <p class="bg-danger text-light rounded-2 p-3">This Field is Required</p>
+                    }@if (myForm.get('password')?.touched && myForm.get('password')?.getError('pattern')){
+                      <p class="bg-danger text-light rounded-2 p-3">  
+                    Password must include at least one uppercase letter, one lowercase letter, one number, and one special character   
+                    }
+                    <div class="d-flex flex-column gap-2">
+                        <p-floatlabel>
+                        <label for="re-password1">Re-password</label>
+                        <input pInputText id="re-password1" type="text" formControlName="rePassword" />
+                        </p-floatlabel>
+                    </div>
+                      @if (myForm.get('rePassword')?.touched && myForm.get('rePassword')?.getError('required')) {
+                        <p class="bg-danger text-light rounded-2 p-3">This Field is Required</p>
+                    }@else if (myForm.get('rePassword')?.touched && myForm.getError('notMatched')){
+                      <p class="bg-danger text-light rounded-2 p-3">  
+                        Passwords do not match
+                         }
+                    <div class="d-flex flex-column gap-2">
+                        <p-floatlabel>
+                        <label for="phone1">Phone</label>
+                        <input pInputText id="phone1" type="text" formControlName="phone"/>
+                        </p-floatlabel>
+                    </div>
+                     @if (myForm.get('phone')?.touched && myForm.get('phone')?.getError('required')) {
+                        <p class="bg-danger text-light rounded-2 p-3">This Field is Required</p>
+                    }@if (myForm.get('phone')?.touched && myForm.get('phone')?.getError('pattern')){
+                      <p class="bg-danger text-light rounded-2 p-3">  
+                        Please enter a valid mobile number.</p>
+                     }
+                       <div class="d-flex flex-column gap-2 justify-content-center">
+                       <p-button label="Submit" severity="contrast" type="submit" [disabled]="!myForm.valid"></p-button>
+                    </div>
+                </form>
+    </div>
+</p-fluid>
