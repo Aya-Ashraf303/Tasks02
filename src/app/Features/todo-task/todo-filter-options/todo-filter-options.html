@@ -1,6 +1,9 @@
 <div class="d-flex gap-4 fw-semibold text-secondary">
-    <span (click)="filterTodoList('all')" #filterActionAll class="filter-action-selected">All</span>
-    <span (click)="filterTodoList('active')" #filterActionActive>Active</span>
-    <span (click)="filterTodoList('Completed')" #filterActionComplted>Completed</span>
+    <span (click)="filterTodoList('all')"
+        [class.filter-action-selected]="_todoService.currentFilter()==='all'">All</span>
+    <span (click)="filterTodoList('active')"
+        [class.filter-action-selected]="_todoService.currentFilter()==='active'">Active</span>
+    <span (click)="filterTodoList('Completed')"
+        [class.filter-action-selected]="_todoService.currentFilter()==='Completed'">Completed</span>
 
 </div>

@@ -13,14 +13,14 @@
     letter-spacing: 12px;
 }
 
-input {
+input.createInput,
+span.todoTaskInput {
     padding: 15px;
     color: var(--primary-text-color);
 }
 
-.taskCheckbox {
+input.taskCheckbox {
 
-    width: 20px;
     accent-color: linear-gradient(#57DDFF, #C058F3);
 }
 
@@ -52,9 +52,11 @@ input {
     .overlay {
         width: 100%;
     }
-.main-container {
-    min-height: 25vh;
-}
+
+    .main-container {
+        min-height: 25vh;
+    }
+
     .list-footer {
         flex-wrap: wrap;
         justify-content: space-between;
@@ -65,9 +67,10 @@ input {
     .overlay {
         width: 80%;
     }
+
     .main-container {
-    min-height: 25vh;
-}
+        min-height: 25vh;
+    }
 }
 
 @media (min-width: 992px) and (max-width:1199px) {

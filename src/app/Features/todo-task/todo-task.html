@@ -4,15 +4,15 @@
             <h1 class="text-white pb-4 fw-bold fs-1">TODO</h1>
         </div>
         <div>
-            <input type="text" pInputText placeholder="Create a new todo..." class="w-100"
-                [(ngModel)]="createInputValue" (keydown.enter)="AddNewTodoTask()">
+            <input type="text" pInputText placeholder="Create a new todo..." class="w-100 createInput"
+                [(ngModel)]="createInputValue" (keydown.enter)="addNewTodoTask()">
         </div>
         @if (!isInputRequired()) {
-            <div class="alert alert-danger mt-2" role="alert">
-                This Field is Required
-            </div>
+        <div class="alert alert-danger mt-2" role="alert">
+            This Field is Required
+        </div>
         }
-        @if (todoTasks().length>0) {
+        @if (isArrayEmpty()) {
         <div class=" w-100  taskList box-shadow  rounded-5  ">
 
             @for (task of todoTasks(); track $index) {
@@ -22,10 +22,11 @@
                 <div class="d-flex ">
                     <input type="checkbox" name="taskValue" id="taskID" [(ngModel)]="task.checked" class="taskCheckbox"
                         (click)="toggleStatus(task.id)">
-                    <input pInputText [placeholder]="task.name" class="todoTaskInput border-0 checked w-100 "
-                        [class]="{'checked':task.status!=='active'}" readonly />
+
+                    <span pInputText class="todoTaskInput border-0 checked w-100 "
+                        [class]="{'checked':task.status!=='active'}" readonly>{{task.name}}</span>
                 </div>
-                <i class="bi bi-x-lg text-secondary d-md-none" (click)="deleteTask(task.id)"></i>
+                <i class="bi bi-x-lg text-secondary" (click)="deleteTask(task.id)"></i>
             </div>
             }
             <div class="list-footer d-flex bg-white justify-content-between text-secondary py-3 px-4  ">
@@ -37,10 +38,15 @@
                     <app-todo-filter-options></app-todo-filter-options>
                 </div>
                 <div>
-                    <span (click)="ClearCompletedTasks()"> Clear Completed</span>
+                    <span (click)="clearCompletedTasks()"> Clear Completed</span>
                 </div>
             </div>
         </div>
+        <div class="list-footer box-shadow d-flex d-md-none bg-white justify-content-center py-3 rounded-2">
+            <app-todo-filter-options></app-todo-filter-options>
+
+        </div>
+        }@else {
         <div class="list-footer box-shadow d-flex d-md-none bg-white justify-content-center py-3 rounded-2">
             <app-todo-filter-options></app-todo-filter-options>
 

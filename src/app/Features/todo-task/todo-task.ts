@@ -1,4 +1,4 @@
-import { Component, effect, OnInit, signal } from '@angular/core';
+import { Component, computed, effect, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { TodolistService } from '../../Service/todolist';
@@ -7,6 +7,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { TodoFilterOptions } from './todo-filter-options/todo-filter-options';
+import { tree } from '@primeuix/themes/aura/treeselect';
 
 @Component({
   selector: 'app-todo-task',
@@ -21,76 +22,72 @@ import { TodoFilterOptions } from './todo-filter-options/todo-filter-options';
   templateUrl: './todo-task.html',
   styleUrl: './todo-task.css',
 })
-export class TodoTask implements OnInit {
+export class TodoTask {
   constructor(private _todoService: TodolistService) {
     effect(() => {
-      this.todoTasks.update(()=>(this._todoService.todoLists()));
-      // this.todoTasks.update(()=>(this._todoService.tasksArray));
-
+      this.todoTasks.update(() => this._todoService.todoLists());
+      if (this.todoTasks().length <= 0) {
+        this.isArrayEmpty.set(true);
+        this.activeTasksCount.set(this.todoTasks().length);
+      }
     });
   }
-  ngOnInit(): void {
-      this.todoTasks.set(this._todoService.todoLists());
-    
-  }
+
   createInputValue: string = '';
   todoTask = signal<TodoTaskInterface>({} as TodoTaskInterface);
   todoTasks = signal<TodoTaskInterface[]>([]);
   activeTasksCount = signal<number>(0);
+  isArrayEmpty = signal<boolean>(false);
+  isInputRequired = signal<boolean>(true);
 
-  isInputRequired=signal<boolean>(true);
+  addNewTodoTask() {
+    if (this.createInputValue !== '') {
+      this.todoTask.set({
+        id: Date.now(),
+        name: this.createInputValue,
+        status: 'active',
+        checked: false,
+      });
 
-  AddNewTodoTask() {
-    this.todoTask.set({
-      id: Date.now(),
-      name: this.createInputValue,
-      status: 'active',
-      checked: false,
-    });
-    if(this.createInputValue!==''){
-    this._todoService.addNewTask(this.todoTask());
-    this.activeTasksCount.set(this._todoService.todoLists().length);
-    console.log(this._todoService.tasksArray);
+      this._todoService.addNewTask(this.todoTask());
+      this.activeTasksCount.set(this._todoService.todoLists().length);
       this.isInputRequired.set(true);
-
-    this.reset();
-    }else
-    {
+      this.reset();
+    } else {
       this.isInputRequired.set(false);
-    console.log(this._todoService.tasksArray);
-      
     }
   }
   reset() {
     this.createInputValue = '';
   }
-
   toggleStatus(id: any) {
     this.todoTasks().forEach((task) => {
-      if (task.id === id && task.status === 'active') {
-        task.status = 'Completed';
-        this.activeTasksCount.update((x) => x - 1);
-      } else if (task.id === id && task.status === 'Completed') {
-        task.status = 'active';
-        this.activeTasksCount.update((x) => x + 1);
+      if (task.id === id) {
+        task.status = task.status === 'active' ? 'Completed' : 'active';
       }
     });
-  }
 
+    this.updateActiveCount();
+  }
+  updateActiveCount() {
+    const activeCount = this._todoService.tasksArray.filter(
+      (task) => task.status === 'active',
+    ).length;
+
+    this.activeTasksCount.set(activeCount);
+  }
   filterTodoList(filterOption: string) {
     this._todoService.todoListFilteration(filterOption);
   }
 
-  ClearCompletedTasks() {
-    this.todoTasks.update(() =>
-      this.todoTasks().filter((task) => {
-        return task.status !== 'Completed';
-      }),
-    );
+  clearCompletedTasks() {
+    this._todoService.clearCompletedTasks();
+
+  this._todoService.todoListFilteration('all');
   }
 
-   deleteTask(id: number) {
+  deleteTask(id: number) {
     this._todoService.deleteTask(id);
-    this.activeTasksCount.set(this._todoService.todoLists().length);
+    this.updateActiveCount();
   }
 }
