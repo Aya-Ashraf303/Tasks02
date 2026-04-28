@@ -1,0 +1,45 @@
+<div class="main-container d-flex justify-content-center">
+    <div class="overlay px-4 px-md-4 pt-md-2  my-md-5 position-absolute mx-auto ">
+        <div class="d-flex justify-content-between align-items-start pt-5 pt-md-2 ">
+            <h1 class="text-white pb-4 fw-bold fs-1">TODO</h1>
+        </div>
+        <div>
+            <input type="text" pInputText placeholder="Create a new todo..." class="w-100"
+                [(ngModel)]="createInputValue" (keydown.enter)="AddNewTodoTask()">
+        </div>
+        @if (todoTasks().length>0) {
+        <div class=" w-100  taskList box-shadow  rounded-5  ">
+
+            @for (task of todoTasks(); track $index) {
+
+            <div class=" bg-white d-flex justify-content-between align-items-center px-4"
+                [class]="{'rounded-top':$index===0}">
+                <div class="d-flex ">
+                    <input type="checkbox" name="taskValue" id="taskID" [(ngModel)]="task.checked" class="taskCheckbox"
+                        (click)="toggleStatus(task.id)">
+                    <input pInputText [placeholder]="task.name" class="todoTaskInput border-0 checked w-100 "
+                        [class]="{'checked':task.status!=='active'}" readonly />
+                </div>
+                <i class="bi bi-x-lg text-secondary d-md-none" (click)="deleteTask(task.id)"></i>
+            </div>
+            }
+            <div class="list-footer d-flex bg-white justify-content-between text-secondary py-3 px-4  ">
+
+                <div class="fw-normal">
+                    <span>{{activeTasksCount()}} items left</span>
+                </div>
+                <div class="d-none d-md-flex">
+                    <app-todo-filter-options></app-todo-filter-options>
+                </div>
+                <div>
+                    <span (click)="ClearCompletedTasks()"> Clear Completed</span>
+                </div>
+            </div>
+        </div>
+        <div class="list-footer box-shadow d-flex d-md-none bg-white justify-content-center py-3 rounded-2">
+            <app-todo-filter-options></app-todo-filter-options>
+
+        </div>
+        }
+    </div>
+</div>

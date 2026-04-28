@@ -1,2 +1,17 @@
 /* You can add global styles to this file, and also import other style files */
 @import "primeicons/primeicons.css";
+
+html {
+  background-color: #FAFAFA;
+}
+
+* {
+  font-family: "Josefin Sans", sans-serif;
+}
+
+:root {
+  --primary-text-color: #494C6B;
+  --secondary-text-color: #d1d2dad5;
+  --divider-color: #E3E4F1;
+  --active-color: #3A7CFD;
+}

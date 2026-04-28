@@ -1,0 +1,77 @@
+.main-container {
+    background-image: url('/bg-desktop-light.jpg');
+    min-height: 37vh;
+    background-position: center;
+    background-size: cover;
+}
+
+.overlay {
+    width: 40%;
+}
+
+.overlay h1 {
+    letter-spacing: 12px;
+}
+
+input {
+    padding: 15px;
+    color: var(--primary-text-color);
+}
+
+.taskCheckbox {
+
+    width: 20px;
+    accent-color: linear-gradient(#57DDFF, #C058F3);
+}
+
+.todoTaskInput.checked {
+    text-decoration: line-through #9495A5;
+    color: var(--secondary-text-color);
+}
+
+.taskList {
+    font-size: 1.125rem;
+    margin-block: 20px;
+}
+
+.box-shadow {
+    box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.20);
+}
+
+.taskList>div {
+    border-bottom: 1px solid var(--divider-color);
+}
+
+.list-footer {
+    cursor: pointer;
+    font-size: 0.88rem;
+    border-radius: 0px 0px 5px 5px;
+}
+
+@media (max-width: 575px) {
+    .overlay {
+        width: 100%;
+    }
+.main-container {
+    min-height: 25vh;
+}
+    .list-footer {
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+}
+
+@media (min-width: 576px) and (max-width:991px) {
+    .overlay {
+        width: 80%;
+    }
+    .main-container {
+    min-height: 25vh;
+}
+}
+
+@media (min-width: 992px) and (max-width:1199px) {
+    .overlay {
+        width: 80%;
+    }
+}

@@ -22,7 +22,6 @@ import { MultiSelectModule } from 'primeng/multiselect';
 @Component({
   selector: 'app-root',
   imports: [
-    RouterLink,
     FluidModule,
     InputTextModule,
     InputIconModule,
@@ -90,7 +89,6 @@ export class App implements OnInit{
       ngOnInit(): void {
         this._countries.getCountries().then((countries)=>
         {
-          console.log(countries);
           this.autoValue=countries;
           
         })
