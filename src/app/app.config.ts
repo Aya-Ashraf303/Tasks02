@@ -11,9 +11,16 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideHttpClient(withFetch()),
      providePrimeNG({
-            theme: {
-                preset: Aura
-            }
-        })
+      theme: {
+        preset: Aura,
+        options: {
+          cssLayer: {
+              name: 'primeng',
+              order: 'primeng, custom-styles' // primeng first, then custom styles override
+          },
+          darkModeSelector: '.dark-mode' , // to enable dark mode in primeng
+        }
+      },      
+    }),
   ]
 };
