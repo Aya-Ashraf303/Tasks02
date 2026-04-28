@@ -7,6 +7,11 @@
             <input type="text" pInputText placeholder="Create a new todo..." class="w-100"
                 [(ngModel)]="createInputValue" (keydown.enter)="AddNewTodoTask()">
         </div>
+        @if (!isInputRequired()) {
+            <div class="alert alert-danger mt-2" role="alert">
+                This Field is Required
+            </div>
+        }
         @if (todoTasks().length>0) {
         <div class=" w-100  taskList box-shadow  rounded-5  ">
 

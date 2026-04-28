@@ -9,29 +9,26 @@ export class TodolistService {
   todoLists = signal<TodoTaskInterface[]>([]);
   addNewTask(newTask: TodoTaskInterface) {
     this.tasksArray.push(newTask);
-    this.todoLists.set(this.tasksArray);
+    this.todoLists.set([...this.tasksArray]);
   }
-
   todoListFilteration(filterOption: string) {
     if (filterOption === 'clear') {
-      this.todoLists.update(() =>
+      this.todoLists.set(
         this.todoLists().filter((task) => {
           return task.status !== 'Completed';
         }),
       );
+      this.todoLists.set([...this.tasksArray]);
     } else if (filterOption === 'active') {
-      this.todoLists.update(() =>
-        this.todoLists().filter((task) => {
-          return task.status === 'active';
-        }),
-      );
-      console.log(this.todoLists());
+      const filtered = this.tasksArray.filter((task) => {
+        return task.status === 'active';
+      });
+      this.todoLists.set(filtered);
     } else if (filterOption === 'Completed') {
-      this.todoLists.update(() =>
-        this.todoLists().filter((task) => {
-          return task.status === 'Completed';
-        }),
-      );
+      const filtered = this.tasksArray.filter((task) => {
+        return task.status === 'Completed';
+      });
+      this.todoLists.set(filtered);
     } else if (filterOption === 'all') {
       this.todoLists.set(this.tasksArray);
     }

@@ -1,4 +1,4 @@
-import { Component, effect, signal } from '@angular/core';
+import { Component, effect, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { TodolistService } from '../../Service/todolist';
@@ -21,16 +21,24 @@ import { TodoFilterOptions } from './todo-filter-options/todo-filter-options';
   templateUrl: './todo-task.html',
   styleUrl: './todo-task.css',
 })
-export class TodoTask {
+export class TodoTask implements OnInit {
   constructor(private _todoService: TodolistService) {
     effect(() => {
-      this.todoTasks.set(this._todoService.todoLists());
+      this.todoTasks.update(()=>(this._todoService.todoLists()));
+      // this.todoTasks.update(()=>(this._todoService.tasksArray));
+
     });
+  }
+  ngOnInit(): void {
+      this.todoTasks.set(this._todoService.todoLists());
+    
   }
   createInputValue: string = '';
   todoTask = signal<TodoTaskInterface>({} as TodoTaskInterface);
   todoTasks = signal<TodoTaskInterface[]>([]);
   activeTasksCount = signal<number>(0);
+
+  isInputRequired=signal<boolean>(true);
 
   AddNewTodoTask() {
     this.todoTask.set({
@@ -39,9 +47,19 @@ export class TodoTask {
       status: 'active',
       checked: false,
     });
+    if(this.createInputValue!==''){
     this._todoService.addNewTask(this.todoTask());
     this.activeTasksCount.set(this._todoService.todoLists().length);
+    console.log(this._todoService.tasksArray);
+      this.isInputRequired.set(true);
+
     this.reset();
+    }else
+    {
+      this.isInputRequired.set(false);
+    console.log(this._todoService.tasksArray);
+      
+    }
   }
   reset() {
     this.createInputValue = '';
@@ -71,7 +89,7 @@ export class TodoTask {
     );
   }
 
-  deleteTask(id: number) {
+   deleteTask(id: number) {
     this._todoService.deleteTask(id);
     this.activeTasksCount.set(this._todoService.todoLists().length);
   }
